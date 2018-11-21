@@ -20,7 +20,7 @@ public class FlightController {
         if (Strings.isEmpty(origin) || Strings.isEmpty(destination) || Strings.isEmpty(departureDate)) {
             throw new RequiredParametersException("Origin, destination and departure date are required");
         }
-        List<Flight> flights = flightService.getOneWayFlights(origin, destination, departureDate);
+        List<Flight> flights = flightService.getFlights(origin, destination, departureDate);
         return new ResponseEntity<>(flights, HttpStatus.OK);
     }
 }

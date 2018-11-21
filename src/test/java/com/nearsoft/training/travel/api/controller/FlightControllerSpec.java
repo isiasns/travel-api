@@ -30,7 +30,7 @@ public class FlightControllerSpec {
     public void givenOneWaySearchWhenGetFlightsThenReturnFlights() throws Exception {
         List<Flight> flights = new ArrayList<>();
         flights.add(Flight.builder().build());
-        expect(flightService.getOneWayFlights(anyString(), anyString(), anyString())).andReturn(flights);
+        expect(flightService.getFlights(anyString(), anyString(), anyString())).andReturn(flights);
         replay(flightService);
         ResponseEntity<List<Flight>> result = flightController.getOneWayFlights("HMO", "CUU", "2018-12-31");
         assertThat(result, notNullValue());
