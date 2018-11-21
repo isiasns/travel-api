@@ -43,7 +43,6 @@ public class FlightControllerSpec {
         assertThat(result.getBody().get(0).getOrigin(), equalTo(flights.get(0).getOrigin()));
         assertThat(result.getBody().get(0).getDestination(), equalTo(flights.get(0).getDestination()));
         assertThat(result.getBody().get(0).getDepartureDate(), equalTo(flights.get(0).getDepartureDate()));
-        reset(flightService);
     }
 
     @Test(expected = RequiredParametersException.class)
@@ -74,7 +73,6 @@ public class FlightControllerSpec {
         assertThat(result.getBody().get("returning").size(), equalTo(flights.get("returning").size()));
         assertThat(result.getBody().get("returning").get(0).getOrigin(), equalTo(flights.get("departing").get(0).getDestination()));
         assertThat(result.getBody().get("returning").get(0).getDepartureDate(), equalTo(flights.get("returning").get(0).getDepartureDate()));
-        reset(flightService);
     }
 
     @Test(expected = RequiredParametersException.class)

@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Map;
 
 public class FlightController {
+    private FlightService flightService;
+
     public FlightController(FlightService flightService) {
         this.flightService = flightService;
     }
-
-    private FlightService flightService;
 
     public ResponseEntity<List<Flight>> getOneWayFlights(String origin, String destination, String departureDate) {
         if (Strings.isEmpty(origin) || Strings.isEmpty(destination) || Strings.isEmpty(departureDate)) {
