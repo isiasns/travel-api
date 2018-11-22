@@ -1,6 +1,7 @@
 package com.nearsoft.training.travel.api.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nearsoft.training.travel.api.config.TravelApiConfig;
 import com.nearsoft.training.travel.api.dao.Airport;
 import com.nearsoft.training.travel.api.exception.RequiredParametersException;
 import org.apache.logging.log4j.util.Strings;
@@ -19,7 +20,7 @@ public class AirportService {
         if (Strings.isEmpty(term)) {
             throw new RequiredParametersException("Term is required");
         }
-        String response = restTemplate.getForObject("https://api.sandbox.amadeus.com/v1.2/airports/autocomplete?apikey=Cb8yAiL9vWb6x91dPUfnwjN4I7CmjUyY&term=" + term, String.class);
+        String response = restTemplate.getForObject(TravelApiConfig.getAirportsAutocomplete() + "&term=" + term, String.class);
         Airport[] airports = {};
         try {
             airports = new ObjectMapper().readValue(response, Airport[].class);
