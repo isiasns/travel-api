@@ -3,6 +3,7 @@ package com.nearsoft.training.travel.api.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nearsoft.training.travel.api.dao.Airport;
+import com.nearsoft.training.travel.api.exception.JsonConvetionException;
 import com.nearsoft.training.travel.api.exception.RequiredParametersException;
 import org.easymock.EasyMockRunner;
 import org.easymock.Mock;
@@ -51,6 +52,14 @@ public class AirportServiceSpec {
     @Test(expected = RestClientException.class)
     public void givenTermWhenGetAutocompleteAirportsAndBadRequestThenThrowException() {
         expect(restTemplate.getForObject(anyString(), anyObject())).andThrow(new RestClientException(""));
+        replay(restTemplate);
+        airportService.getAutocompleteAirports("Bost");
+        verify(restTemplate);
+    }
+
+    @Test(expected = JsonConvetionException.class)
+    public void givenTermWhenGetAutocompleteAirportsAndBadContentThenThrowException() {
+        expect(restTemplate.getForObject(anyString(), anyObject())).andReturn("error");
         replay(restTemplate);
         airportService.getAutocompleteAirports("Bost");
         verify(restTemplate);
