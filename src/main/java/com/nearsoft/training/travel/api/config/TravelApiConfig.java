@@ -6,32 +6,32 @@ import org.springframework.context.annotation.Configuration;
 
 @Data
 @Configuration
-@ConfigurationProperties(prefix = "travel-api")
+@ConfigurationProperties("travel-api")
 public class TravelApiConfig {
-    private static String apiKey;
-    private static String url;
-    private static String version;
-    private static final String PARAMS = "?";
+    private final String PARAMS = "?";
+    private String apikey;
+    private String url;
+    private String version;
+    private AirportsApi airportsApi;
 
-    private static String getTravelApiUrl() {
+    private String getTravelApiUrl() {
         return url + version;
     }
 
-    private static String getApiKey() {
-        return "apiKey=" + apiKey;
+    private String getApikey() {
+        return "apikey=" + apikey;
     }
 
-    public static String getAirportsAutocomplete() {
-        return getTravelApiUrl() + AirportsConfig.getAutocompleteUrl() + PARAMS + getApiKey();
+    public String getAirportsAutocomplete() {
+        return getTravelApiUrl() + airportsApi.getAutocompleteUrl() + PARAMS + getApikey();
     }
 
     @Data
-    @ConfigurationProperties(prefix = "airports-api")
-    public static class AirportsConfig {
-        private static String url;
-        private static String autocomplete;
+    public static class AirportsApi {
+        private String url;
+        private String autocomplete;
 
-        public static String getAutocompleteUrl() {
+        public String getAutocompleteUrl() {
             return url + autocomplete;
         }
     }

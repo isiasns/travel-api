@@ -7,21 +7,26 @@ import com.nearsoft.training.travel.api.exception.JsonConvetionException;
 import com.nearsoft.training.travel.api.exception.RequiredParametersException;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+@Service
 public class AirportService {
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private TravelApiConfig travelApiConfig;
 
     public List<Airport> getAutocompleteAirports(String term) {
         if (Strings.isEmpty(term)) {
             throw new RequiredParametersException("Term is required");
         }
-        String response = restTemplate.getForObject(TravelApiConfig.getAirportsAutocomplete() + "&term=" + term, String.class);
+        final String url = travelApiConfig.getAirportsAutocomplete() + "&term=" + term;
+        final String response = restTemplate.getForObject(url, String.class);
         Airport[] airports = {};
         try {
             airports = new ObjectMapper().readValue(response, Airport[].class);

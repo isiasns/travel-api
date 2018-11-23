@@ -1,6 +1,5 @@
 package com.nearsoft.training.travel.api.dao;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

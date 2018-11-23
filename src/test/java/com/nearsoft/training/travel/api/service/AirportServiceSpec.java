@@ -2,6 +2,7 @@ package com.nearsoft.training.travel.api.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nearsoft.training.travel.api.config.TravelApiConfig;
 import com.nearsoft.training.travel.api.dao.Airport;
 import com.nearsoft.training.travel.api.exception.JsonConvetionException;
 import com.nearsoft.training.travel.api.exception.RequiredParametersException;
@@ -24,6 +25,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class AirportServiceSpec {
     @Mock
     private RestTemplate restTemplate;
+    @Mock
+    private TravelApiConfig travelApiConfig;
     @TestSubject
     private AirportService airportService = new AirportService();
 
@@ -34,10 +37,11 @@ public class AirportServiceSpec {
         airportList.add(Airport.builder().iataCode("PSM").name("Boston - Portsmouth International Airport at Pease [PSM]").build());
         airportList.add(Airport.builder().iataCode("BST").name("Lashkar Gāh - Bost Airfield [BST]").build());
         String airportsString = new ObjectMapper().writeValueAsString(airportList);
+        expect(travelApiConfig.getAirportsAutocomplete()).andReturn("");
         expect(restTemplate.getForObject(anyString(), anyObject())).andReturn(airportsString);
-        replay(restTemplate);
+        replay(travelApiConfig, restTemplate);
         List<Airport> airports = airportService.getAutocompleteAirports("Bost");
-        verify(restTemplate);
+        verify(travelApiConfig, restTemplate);
         assertThat(airports.size(), equalTo(3));
         assertThat(airports.get(0).getIataCode(), equalTo(airportList.get(0).getIataCode()));
         assertThat(airports.get(1).getIataCode(), equalTo(airportList.get(1).getIataCode()));
@@ -51,17 +55,19 @@ public class AirportServiceSpec {
 
     @Test(expected = RestClientException.class)
     public void givenTermWhenGetAutocompleteAirportsAndBadRequestThenThrowException() {
+        expect(travelApiConfig.getAirportsAutocomplete()).andReturn("");
         expect(restTemplate.getForObject(anyString(), anyObject())).andThrow(new RestClientException(""));
-        replay(restTemplate);
+        replay(travelApiConfig, restTemplate);
         airportService.getAutocompleteAirports("Bost");
-        verify(restTemplate);
+        verify(travelApiConfig, restTemplate);
     }
 
     @Test(expected = JsonConvetionException.class)
     public void givenTermWhenGetAutocompleteAirportsAndBadContentThenThrowException() {
+        expect(travelApiConfig.getAirportsAutocomplete()).andReturn("");
         expect(restTemplate.getForObject(anyString(), anyObject())).andReturn("error");
-        replay(restTemplate);
+        replay(travelApiConfig, restTemplate);
         airportService.getAutocompleteAirports("Bost");
-        verify(restTemplate);
+        verify(travelApiConfig, restTemplate);
     }
 }
