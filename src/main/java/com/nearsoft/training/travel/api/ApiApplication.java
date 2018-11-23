@@ -8,7 +8,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.Charset;
 
-@SpringBootApplication(scanBasePackages = {"com.nearsoft.training.travel.api"})
+@SpringBootApplication
 public class ApiApplication {
 
     public static void main(String[] args) {
