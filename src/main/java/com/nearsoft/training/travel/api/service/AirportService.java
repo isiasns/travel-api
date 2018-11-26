@@ -7,6 +7,7 @@ import com.nearsoft.training.travel.api.exception.JsonConvetionException;
 import com.nearsoft.training.travel.api.exception.RequiredParametersException;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -21,6 +22,8 @@ public class AirportService {
     @Autowired
     private TravelApiConfig travelApiConfig;
 
+
+    @Cacheable(value = "autocomplete-airports", key = "#term")
     public List<Airport> getAutocompleteAirports(String term) {
         if (Strings.isEmpty(term)) {
             throw new RequiredParametersException("Term is required");
