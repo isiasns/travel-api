@@ -2,10 +2,8 @@ package com.nearsoft.training.travel.api.controller;
 
 import com.nearsoft.training.travel.api.ApiApplication;
 import com.nearsoft.training.travel.api.dao.Airport;
-import org.json.JSONException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;

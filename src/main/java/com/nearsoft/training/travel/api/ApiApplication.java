@@ -11,6 +11,8 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.Charset;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 
 @SpringBootApplication
@@ -29,10 +31,15 @@ public class ApiApplication {
     }
 
     @Bean
-    public CacheManager cacheManager() {
+    public CacheManager getCacheManager() {
         SimpleCacheManager cacheManager = new SimpleCacheManager();
         cacheManager.setCaches(Collections.singletonList(new ConcurrentMapCache("autocomplete-airports")));
         cacheManager.initializeCaches();
         return cacheManager;
+    }
+
+    @Bean
+    public DateFormat getDateFormat() {
+        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
     }
 }
