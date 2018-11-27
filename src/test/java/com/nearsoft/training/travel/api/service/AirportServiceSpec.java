@@ -31,12 +31,17 @@ public class AirportServiceSpec {
     private AirportService airportService = new AirportService();
 
     @Test
-    public void givenTermWhenGetAutocompleteAirportsThenReturnAirports() throws JsonProcessingException {
+    public void givenTermWhenGetAutocompleteAirportsThenReturnAirports() {
         List<Airport> airportList = new ArrayList<>();
         airportList.add(Airport.builder().iataCode("BOS").name("Boston - Logan International Airport [BOS]").build());
         airportList.add(Airport.builder().iataCode("PSM").name("Boston - Portsmouth International Airport at Pease [PSM]").build());
         airportList.add(Airport.builder().iataCode("BST").name("Lashkar Gāh - Bost Airfield [BST]").build());
-        String airportsString = new ObjectMapper().writeValueAsString(airportList);
+        String airportsString = null;
+        try {
+            airportsString = new ObjectMapper().writeValueAsString(airportList);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         expect(travelApiConfig.getAirportsAutocomplete()).andReturn("");
         expect(restTemplate.getForObject(anyString(), anyObject())).andReturn(airportsString);
         replay(travelApiConfig, restTemplate);
