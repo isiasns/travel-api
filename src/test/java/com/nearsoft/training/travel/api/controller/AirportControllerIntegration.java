@@ -19,10 +19,12 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {ApiApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -39,13 +41,13 @@ public class AirportControllerIntegration {
     public void givenTermWhenAirportsAutocompleteThenReturnAirports() {
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
         String term = "Bost";
-        ResponseEntity<String> response = restTemplate.exchange(createUrlWithPort("/airports/autocomplete/" + term), HttpMethod.GET, entity, String.class);
-        String expected = "[ { \"iataCode\": \"BOS\", \"name\": \"Boston - Logan International Airport [BOS]\" }, { \"iataCode\": \"PSM\", \"name\": \"Boston - Portsmouth International Airport at Pease [PSM]\" }, { \"iataCode\": \"BST\", \"name\": \"Lashkar Gāh - Bost Airfield [BST]\" } ]";
-        try {
-            JSONAssert.assertEquals(expected, response.getBody(), false);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        ResponseEntity<List<Airport>> response = restTemplate.exchange(createUrlWithPort("/airports/autocomplete/" + term), HttpMethod.GET, entity, new ParameterizedTypeReference<List<Airport>>() {
+        });
+        List<Airport> airports = new ArrayList<>();
+        airports.add(Airport.builder().iataCode("BOS").name("Boston - Logan International Airport [BOS]").build());
+        airports.add(Airport.builder().iataCode("PSM").name("Boston - Portsmouth International Airport at Pease [PSM]").build());
+        airports.add(Airport.builder().iataCode("BST").name("Lashkar Gāh - Bost Airfield [BST]").build());
+        assertThat(response.getBody(), containsInAnyOrder(airports.toArray()));
     }
 
     private String createUrlWithPort(String uri) {
