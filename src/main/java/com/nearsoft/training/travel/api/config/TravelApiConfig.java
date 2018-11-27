@@ -31,6 +31,10 @@ public class TravelApiConfig {
         return getTravelApiUrl() + flightsApi.getOneWaySearchUrl() + PARAMS + getApikey();
     }
 
+    public String getRoundTripSearch() {
+        return getTravelApiUrl() + flightsApi.getRoundTripSearchUrl() + PARAMS + getApikey();
+    }
+
     @Data
     public static class AirportsApi {
         private String url;
@@ -45,9 +49,14 @@ public class TravelApiConfig {
     public static class FlightsApi {
         private String url;
         private String oneWay;
+        private String roundTrip;
 
         public String getOneWaySearchUrl() {
             return url + oneWay;
+        }
+
+        public String getRoundTripSearchUrl() {
+            return url + roundTrip;
         }
     }
 }

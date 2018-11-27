@@ -15,7 +15,7 @@ public class JsonFlightsUtil {
     @Autowired
     private DateFormat dateFormat;
 
-    public List<Flight> getOutboundFlightsFromRootNode(JsonNode rootNode) {
+    public List<Flight> getOneWayFlightsFromRootNode(JsonNode rootNode) {
         List<Flight> flights = new ArrayList<Flight>();
         Iterator<JsonNode> resultsNode = rootNode.get("results").elements();
         while (resultsNode.hasNext()) {
@@ -78,5 +78,9 @@ public class JsonFlightsUtil {
             }
         }
         return flightBuilder.build();
+    }
+
+    public Map<String, List<Flight>> getRoundTripFlightsFromRootNode(JsonNode rootNode) {
+        return null;
     }
 }

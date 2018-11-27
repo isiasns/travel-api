@@ -36,11 +36,22 @@ public class FlightService {
         } catch (IOException e) {
             throw new JsonConvetionException(e.getMessage());
         }
-        return jsonFlightsUtil.getOutboundFlightsFromRootNode(rootNode);
+        return jsonFlightsUtil.getOneWayFlightsFromRootNode(rootNode);
 
     }
 
-    public Map<String, List<Flight>> getFlights(String origin, String destination, String departureDate, String returningDate) {
-        return null;
+    public Map<String, List<Flight>> getFlights(String origin, String destination, String departureDate, String returnDate) {
+        if (Strings.isEmpty(origin) || Strings.isEmpty(destination) || Strings.isEmpty(departureDate) || Strings.isEmpty(returnDate)) {
+            throw new RequiredParametersException("Origin, destination, departure date and return date are required");
+        }
+        final String url = travelApiConfig.getRoundTripSearch() + "&origin=" + origin + "&destination=" + destination + "&departure_date=" + departureDate + "&return_date=" + returnDate;
+        final String response = restTemplate.getForObject(url, String.class);
+        JsonNode rootNode;
+        try {
+            rootNode = new ObjectMapper().readTree(response);
+        } catch (IOException e) {
+            throw new JsonConvetionException(e.getMessage());
+        }
+        return jsonFlightsUtil.getRoundTripFlightsFromRootNode(rootNode);
     }
 }
