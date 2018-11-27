@@ -36,7 +36,7 @@ public class FlightService {
         } catch (IOException e) {
             throw new JsonConvetionException(e.getMessage());
         }
-        return jsonFlightsUtil.getOneWayFlightsFromRootNode(rootNode);
+        return jsonFlightsUtil.getDepartureFlightsFromRootNode(rootNode);
 
     }
 

@@ -9,9 +9,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
 
@@ -25,5 +27,12 @@ public class FlightServiceIntegration {
     public void givenOriginDestinationDepartureWhenGetFlightsThenReturnFlights() {
         List<Flight> flights = flightService.getFlights("LAX", "BOS", "2019-01-31");
         assertThat(flights, is(not(empty())));
+    }
+
+    @Test
+    public void givenOriginDestinationDepartureReturnWhenGetFlightsThenReturnFlights() {
+        Map<String, List<Flight>> flights = flightService.getFlights("LAX", "BOS", "2019-01-31", "2019-02-28");
+        assertThat(flights, hasKey("departure"));
+        assertThat(flights, hasKey("return"));
     }
 }

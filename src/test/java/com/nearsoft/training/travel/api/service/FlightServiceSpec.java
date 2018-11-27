@@ -56,7 +56,7 @@ public class FlightServiceSpec {
         }
         expect(travelApiConfig.getOneWaySearch()).andReturn("");
         expect(restTemplate.getForObject(anyString(), anyObject())).andReturn(flightsString);
-        expect(jsonFlightsUtil.getOneWayFlightsFromRootNode(anyObject())).andReturn(flightList);
+        expect(jsonFlightsUtil.getDepartureFlightsFromRootNode(anyObject())).andReturn(flightList);
         replay(travelApiConfig, restTemplate, jsonFlightsUtil);
         List<Flight> flights = flightService.getFlights("LAX", "BOS", "2019-01-31");
         verify(travelApiConfig, restTemplate, jsonFlightsUtil);

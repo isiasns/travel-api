@@ -6,16 +6,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class JsonFlightsUtil {
     @Autowired
     private DateFormat dateFormat;
 
-    public List<Flight> getOneWayFlightsFromRootNode(JsonNode rootNode) {
+    public List<Flight> getDepartureFlightsFromRootNode(JsonNode rootNode) {
+        return getFlightsFromRootNode(rootNode, "outbound");
+    }
+
+    private List<Flight> getReturnFlightsFromRootNode(JsonNode rootNode) {
+        return getFlightsFromRootNode(rootNode, "inbound");
+    }
+
+    private List<Flight> getFlightsFromRootNode(JsonNode rootNode, String nodeName) {
         List<Flight> flights = new ArrayList<Flight>();
         Iterator<JsonNode> resultsNode = rootNode.get("results").elements();
         while (resultsNode.hasNext()) {
@@ -24,7 +29,7 @@ public class JsonFlightsUtil {
                 Iterator<JsonNode> itinerariesNode = resultNode.get("itineraries").elements();
                 while (itinerariesNode.hasNext()) {
                     JsonNode itineraryNode = itinerariesNode.next();
-                    Iterator<JsonNode> flightsNode = itineraryNode.get("outbound").get("flights").elements();
+                    Iterator<JsonNode> flightsNode = itineraryNode.get(nodeName).get("flights").elements();
                     while (flightsNode.hasNext()) {
                         JsonNode flightNode = flightsNode.next();
                         flights.add(getFlightFromNode(flightNode));
@@ -81,6 +86,9 @@ public class JsonFlightsUtil {
     }
 
     public Map<String, List<Flight>> getRoundTripFlightsFromRootNode(JsonNode rootNode) {
-        return null;
+        Map<String, List<Flight>> flights = new HashMap<>();
+        flights.put("departure", getDepartureFlightsFromRootNode(rootNode));
+        flights.put("return", getReturnFlightsFromRootNode(rootNode));
+        return flights;
     }
 }
