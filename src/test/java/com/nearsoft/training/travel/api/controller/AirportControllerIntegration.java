@@ -53,7 +53,7 @@ public class AirportControllerIntegration {
     }
 
     @Test
-    public void givenTermWhenAirportsAutocompleteTwiceThenReturnCachedAirports() {
+    public void givenTermWhenAirportsAutocompleteThenCachedAirports() {
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
         String term = "Bost";
         Cache cache = cacheManager.getCache("autocomplete-airports");

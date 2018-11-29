@@ -34,7 +34,8 @@ public class FlightController {
         return new ResponseEntity<>(flights, HttpStatus.OK);
     }
 
-    public ResponseEntity<Map<String, List<Flight>>> getRoundTripFlights(String origin, String destination, String departureDate, String returnDate) {
+    @GetMapping("/round-trip/origin/{origin}/destination/{destination}/departure/{departureDate}/return/{returnDate}")
+    public ResponseEntity<Map<String, List<Flight>>> getRoundTripFlights(@PathVariable String origin, @PathVariable String destination, @PathVariable String departureDate, @PathVariable String returnDate) {
         if (Strings.isEmpty(origin) || Strings.isEmpty(destination) || Strings.isEmpty(departureDate) || Strings.isEmpty(returnDate)) {
             throw new RequiredParametersException("Origin, destination, departure date and return date are required");
         }

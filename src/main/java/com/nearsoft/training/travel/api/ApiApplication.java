@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Collections;
 
 @SpringBootApplication
@@ -34,7 +35,10 @@ public class ApiApplication {
     @Bean
     public CacheManager getCacheManager() {
         SimpleCacheManager cacheManager = new SimpleCacheManager();
-        cacheManager.setCaches(Collections.singletonList(new ConcurrentMapCache("autocomplete-airports")));
+        cacheManager.setCaches(Arrays.asList(
+                new ConcurrentMapCache("autocomplete-airports"),
+                new ConcurrentMapCache("one-way-flights"),
+                new ConcurrentMapCache("round-trip-flights")));
         cacheManager.initializeCaches();
         return cacheManager;
     }

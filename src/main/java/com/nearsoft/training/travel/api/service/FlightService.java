@@ -8,6 +8,7 @@ import com.nearsoft.training.travel.api.exception.JsonConvetionException;
 import com.nearsoft.training.travel.api.exception.RequiredParametersException;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -24,6 +25,7 @@ public class FlightService {
     @Autowired
     private TravelApiConfig travelApiConfig;
 
+    @Cacheable(value = "one-way-flights", key = "#origin + #destination + #departureDate")
     public List<Flight> getFlights(String origin, String destination, String departureDate) {
         if (Strings.isEmpty(origin) || Strings.isEmpty(destination) || Strings.isEmpty(departureDate)) {
             throw new RequiredParametersException("Origin, destination and departure date are required");
@@ -39,7 +41,7 @@ public class FlightService {
         return jsonFlightsUtil.getDepartureFlightsFromRootNode(rootNode);
 
     }
-
+    @Cacheable(value = "round-trip-flights", key = "#origin + #destination + #departureDate + #returnDate")
     public Map<String, List<Flight>> getFlights(String origin, String destination, String departureDate, String returnDate) {
         if (Strings.isEmpty(origin) || Strings.isEmpty(destination) || Strings.isEmpty(departureDate) || Strings.isEmpty(returnDate)) {
             throw new RequiredParametersException("Origin, destination, departure date and return date are required");
