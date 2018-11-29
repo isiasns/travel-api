@@ -41,6 +41,7 @@ public class FlightService {
         return jsonFlightsUtil.getDepartureFlightsFromRootNode(rootNode);
 
     }
+
     @Cacheable(value = "round-trip-flights", key = "#origin + #destination + #departureDate + #returnDate")
     public Map<String, List<Flight>> getFlights(String origin, String destination, String departureDate, String returnDate) {
         if (Strings.isEmpty(origin) || Strings.isEmpty(destination) || Strings.isEmpty(departureDate) || Strings.isEmpty(returnDate)) {
