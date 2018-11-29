@@ -6,6 +6,7 @@ import com.nearsoft.training.travel.api.config.TravelApiConfig;
 import com.nearsoft.training.travel.api.dao.Flight;
 import com.nearsoft.training.travel.api.exception.JsonConvetionException;
 import com.nearsoft.training.travel.api.exception.RequiredParametersException;
+import com.nearsoft.training.travel.api.util.JsonFlightsUtil;
 import org.easymock.EasyMockRunner;
 import org.easymock.Mock;
 import org.easymock.TestSubject;

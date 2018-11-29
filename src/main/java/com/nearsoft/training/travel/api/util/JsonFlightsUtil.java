@@ -1,13 +1,15 @@
-package com.nearsoft.training.travel.api.service;
+package com.nearsoft.training.travel.api.util;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.nearsoft.training.travel.api.dao.Flight;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.*;
 
+@Component
 public class JsonFlightsUtil {
     @Autowired
     private DateFormat dateFormat;

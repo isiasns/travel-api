@@ -1,6 +1,6 @@
 package com.nearsoft.training.travel.api;
 
-import com.nearsoft.training.travel.api.service.JsonFlightsUtil;
+import com.nearsoft.training.travel.api.util.JsonFlightsUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.CacheManager;
@@ -45,10 +45,5 @@ public class ApiApplication {
     @Bean
     public DateFormat getDateFormat() {
         return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-    }
-
-    @Bean
-    public JsonFlightsUtil getJsonFlightsUtil() {
-        return new JsonFlightsUtil();
     }
 }
