@@ -2,8 +2,6 @@ package com.nearsoft.training.travel.api.util;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.nearsoft.training.travel.api.dao.Flight;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -11,7 +9,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class JsonFlightsUtil {
-    private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");;
+    private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+    ;
 
     public static List<Flight> getDepartureFlightsFromRootNode(JsonNode rootNode) {
         return getFlightsFromRootNode(rootNode, "outbound");

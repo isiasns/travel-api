@@ -1,6 +1,5 @@
 package com.nearsoft.training.travel.api;
 
-import com.nearsoft.training.travel.api.util.JsonFlightsUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.CacheManager;
@@ -12,8 +11,6 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.Charset;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 @SpringBootApplication

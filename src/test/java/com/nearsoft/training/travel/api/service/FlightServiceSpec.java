@@ -7,14 +7,10 @@ import com.nearsoft.training.travel.api.dao.Flight;
 import com.nearsoft.training.travel.api.exception.JsonConvetionException;
 import com.nearsoft.training.travel.api.exception.RequiredParametersException;
 import com.nearsoft.training.travel.api.util.JsonFlightsUtil;
-import org.easymock.EasyMock;
-import org.easymock.EasyMockRunner;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.powermock.api.easymock.PowerMock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.web.client.RestClientException;
@@ -34,7 +30,6 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.powermock.api.easymock.PowerMock.mockStatic;
 import static org.powermock.api.easymock.PowerMock.replayAll;
-import static org.powermock.api.easymock.PowerMock.verifyAll;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(JsonFlightsUtil.class)
