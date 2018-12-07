@@ -20,8 +20,6 @@ import java.util.Map;
 @Service
 public class FlightService {
     @Autowired
-    private JsonFlightsUtil jsonFlightsUtil;
-    @Autowired
     private RestTemplate restTemplate;
     @Autowired
     private TravelApiConfig travelApiConfig;
@@ -39,7 +37,7 @@ public class FlightService {
         } catch (IOException e) {
             throw new JsonConvetionException(e.getMessage());
         }
-        return jsonFlightsUtil.getDepartureFlightsFromRootNode(rootNode);
+        return JsonFlightsUtil.getDepartureFlightsFromRootNode(rootNode);
 
     }
 
@@ -56,6 +54,6 @@ public class FlightService {
         } catch (IOException e) {
             throw new JsonConvetionException(e.getMessage());
         }
-        return jsonFlightsUtil.getRoundTripFlightsFromRootNode(rootNode);
+        return JsonFlightsUtil.getRoundTripFlightsFromRootNode(rootNode);
     }
 }

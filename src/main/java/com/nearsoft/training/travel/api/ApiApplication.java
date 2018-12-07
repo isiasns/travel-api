@@ -41,9 +41,4 @@ public class ApiApplication {
         cacheManager.initializeCaches();
         return cacheManager;
     }
-
-    @Bean
-    public DateFormat getDateFormat() {
-        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-    }
 }

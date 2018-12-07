@@ -7,11 +7,16 @@ import com.nearsoft.training.travel.api.dao.Flight;
 import com.nearsoft.training.travel.api.exception.JsonConvetionException;
 import com.nearsoft.training.travel.api.exception.RequiredParametersException;
 import com.nearsoft.training.travel.api.util.JsonFlightsUtil;
+import org.easymock.EasyMock;
 import org.easymock.EasyMockRunner;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.powermock.api.easymock.PowerMock;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -27,15 +32,17 @@ import static org.easymock.EasyMock.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.powermock.api.easymock.PowerMock.mockStatic;
+import static org.powermock.api.easymock.PowerMock.replayAll;
+import static org.powermock.api.easymock.PowerMock.verifyAll;
 
-@RunWith(EasyMockRunner.class)
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(JsonFlightsUtil.class)
 public class FlightServiceSpec {
     @Mock
     private RestTemplate restTemplate;
     @Mock
     private TravelApiConfig travelApiConfig;
-    @Mock
-    private JsonFlightsUtil jsonFlightsUtil;
     @TestSubject
     private FlightService flightService = new FlightService();
 
@@ -55,12 +62,14 @@ public class FlightServiceSpec {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+        mockStatic(JsonFlightsUtil.class);
         expect(travelApiConfig.getOneWaySearch()).andReturn("");
         expect(restTemplate.getForObject(anyString(), anyObject())).andReturn(flightsString);
-        expect(jsonFlightsUtil.getDepartureFlightsFromRootNode(anyObject())).andReturn(flightList);
-        replay(travelApiConfig, restTemplate, jsonFlightsUtil);
+        expect(JsonFlightsUtil.getDepartureFlightsFromRootNode(anyObject())).andReturn(flightList);
+        replay(travelApiConfig, restTemplate);
+        replayAll(JsonFlightsUtil.class);
         List<Flight> flights = flightService.getFlights("LAX", "BOS", "2019-01-31");
-        verify(travelApiConfig, restTemplate, jsonFlightsUtil);
+        verify(travelApiConfig, restTemplate);
         assertThat(flights.size(), greaterThanOrEqualTo(2));
         assertThat(flights.get(0).getOrigin(), equalTo("LAX"));
         assertThat(flights.get(1).getOrigin(), equalTo("LAX"));
@@ -115,12 +124,14 @@ public class FlightServiceSpec {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+        mockStatic(JsonFlightsUtil.class);
         expect(travelApiConfig.getRoundTripSearch()).andReturn("");
         expect(restTemplate.getForObject(anyString(), anyObject())).andReturn(flightsString);
-        expect(jsonFlightsUtil.getRoundTripFlightsFromRootNode(anyObject())).andReturn(flightsMap);
-        replay(travelApiConfig, restTemplate, jsonFlightsUtil);
+        expect(JsonFlightsUtil.getRoundTripFlightsFromRootNode(anyObject())).andReturn(flightsMap);
+        replay(travelApiConfig, restTemplate);
+        replayAll(JsonFlightsUtil.class);
         Map<String, List<Flight>> flights = flightService.getFlights("LAX", "BOS", "2019-01-31", "2019-02-28");
-        verify(travelApiConfig, restTemplate, jsonFlightsUtil);
+        verify(travelApiConfig, restTemplate);
         assertThat(flights.size(), greaterThanOrEqualTo(2));
     }
 

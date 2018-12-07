@@ -7,22 +7,21 @@ import org.springframework.stereotype.Component;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
-@Component
 public class JsonFlightsUtil {
-    @Autowired
-    private DateFormat dateFormat;
+    private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");;
 
-    public List<Flight> getDepartureFlightsFromRootNode(JsonNode rootNode) {
+    public static List<Flight> getDepartureFlightsFromRootNode(JsonNode rootNode) {
         return getFlightsFromRootNode(rootNode, "outbound");
     }
 
-    private List<Flight> getReturnFlightsFromRootNode(JsonNode rootNode) {
+    private static List<Flight> getReturnFlightsFromRootNode(JsonNode rootNode) {
         return getFlightsFromRootNode(rootNode, "inbound");
     }
 
-    private List<Flight> getFlightsFromRootNode(JsonNode rootNode, String nodeName) {
+    private static List<Flight> getFlightsFromRootNode(JsonNode rootNode, String nodeName) {
         List<Flight> flights = new ArrayList<Flight>();
         Iterator<JsonNode> resultsNode = rootNode.get("results").elements();
         while (resultsNode.hasNext()) {
@@ -42,7 +41,7 @@ public class JsonFlightsUtil {
         return flights;
     }
 
-    private Flight getFlightFromNode(JsonNode flightNode) {
+    private static Flight getFlightFromNode(JsonNode flightNode) {
         Flight.FlightBuilder flightBuilder = Flight.builder();
         Iterator<Map.Entry<String, JsonNode>> fieldsNode = flightNode.fields();
         while (fieldsNode.hasNext()) {
@@ -87,7 +86,7 @@ public class JsonFlightsUtil {
         return flightBuilder.build();
     }
 
-    public Map<String, List<Flight>> getRoundTripFlightsFromRootNode(JsonNode rootNode) {
+    public static Map<String, List<Flight>> getRoundTripFlightsFromRootNode(JsonNode rootNode) {
         Map<String, List<Flight>> flights = new HashMap<>();
         flights.put("departure", getDepartureFlightsFromRootNode(rootNode));
         flights.put("return", getReturnFlightsFromRootNode(rootNode));
