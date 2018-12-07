@@ -92,6 +92,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
+                    <rerunFailingTestsCount>1</rerunFailingTestsCount>
                     <includes>
                         <include>**/*Spec.java</include>
                         <include>**/*Integration.java</include>
