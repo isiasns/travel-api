@@ -3,7 +3,7 @@ package com.nearsoft.training.travel.api.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nearsoft.training.travel.api.config.TravelApiConfig;
 import com.nearsoft.training.travel.api.dao.Airport;
-import com.nearsoft.training.travel.api.exception.JsonConvetionException;
+import com.nearsoft.training.travel.api.exception.JsonConversionException;
 import com.nearsoft.training.travel.api.exception.RequiredParametersException;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class AirportService {
         try {
             airports = new ObjectMapper().readValue(response, Airport[].class);
         } catch (IOException e) {
-            throw new JsonConvetionException(e.getMessage());
+            throw new JsonConversionException(e.getMessage());
         }
         return Arrays.asList(airports);
     }

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nearsoft.training.travel.api.config.TravelApiConfig;
 import com.nearsoft.training.travel.api.dao.Flight;
-import com.nearsoft.training.travel.api.exception.JsonConvetionException;
+import com.nearsoft.training.travel.api.exception.JsonConversionException;
 import com.nearsoft.training.travel.api.exception.RequiredParametersException;
 import com.nearsoft.training.travel.api.util.JsonFlightsUtil;
 import org.apache.logging.log4j.util.Strings;
@@ -35,7 +35,7 @@ public class FlightService {
         try {
             rootNode = new ObjectMapper().readTree(response);
         } catch (IOException e) {
-            throw new JsonConvetionException(e.getMessage());
+            throw new JsonConversionException(e.getMessage());
         }
         return JsonFlightsUtil.getDepartureFlightsFromRootNode(rootNode);
 
@@ -52,7 +52,7 @@ public class FlightService {
         try {
             rootNode = new ObjectMapper().readTree(response);
         } catch (IOException e) {
-            throw new JsonConvetionException(e.getMessage());
+            throw new JsonConversionException(e.getMessage());
         }
         return JsonFlightsUtil.getRoundTripFlightsFromRootNode(rootNode);
     }

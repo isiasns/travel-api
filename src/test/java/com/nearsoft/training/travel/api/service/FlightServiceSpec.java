@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nearsoft.training.travel.api.config.TravelApiConfig;
 import com.nearsoft.training.travel.api.dao.Flight;
-import com.nearsoft.training.travel.api.exception.JsonConvetionException;
+import com.nearsoft.training.travel.api.exception.JsonConversionException;
 import com.nearsoft.training.travel.api.exception.RequiredParametersException;
 import com.nearsoft.training.travel.api.util.JsonFlightsUtil;
 import org.easymock.Mock;
@@ -84,7 +84,7 @@ public class FlightServiceSpec {
         verify(travelApiConfig, restTemplate);
     }
 
-    @Test(expected = JsonConvetionException.class)
+    @Test(expected = JsonConversionException.class)
     public void givenEmptyOriginDestinationDepartureWhenGetFlightsAndBadContentThenThrowException() {
         expect(travelApiConfig.getOneWaySearch()).andReturn("");
         expect(restTemplate.getForObject(anyString(), anyObject())).andReturn("error");
@@ -144,7 +144,7 @@ public class FlightServiceSpec {
         verify(travelApiConfig, restTemplate);
     }
 
-    @Test(expected = JsonConvetionException.class)
+    @Test(expected = JsonConversionException.class)
     public void givenEmptyOriginDestinationDepartureReturnWhenGetFlightsAndBadContentThenThrowException() {
         expect(travelApiConfig.getRoundTripSearch()).andReturn("");
         expect(restTemplate.getForObject(anyString(), anyObject())).andReturn("error");
