@@ -23,7 +23,6 @@ import static org.hamcrest.core.IsNot.not;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {ApiApplication.class})
-@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 public class FlightServiceIntegration {
     @Autowired
     private FlightService flightService;

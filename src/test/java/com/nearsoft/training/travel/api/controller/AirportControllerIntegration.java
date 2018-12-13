@@ -30,7 +30,6 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {ApiApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 public class AirportControllerIntegration {
     private static final String host = "http://localhost:";
     @LocalServerPort
