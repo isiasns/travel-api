@@ -1,8 +1,10 @@
 package com.nearsoft.training.travel.api.service;
 
 import com.nearsoft.training.travel.api.dao.User;
+import com.nearsoft.training.travel.api.exception.RequiredParametersException;
 import com.nearsoft.training.travel.api.exception.UserFoundException;
 import com.nearsoft.training.travel.api.repository.UserRepository;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,9 @@ public class UserService {
     }
 
     public User registerUser(String username, String email, String password) {
+        if (Strings.isEmpty(username) || Strings.isEmpty(email) || Strings.isEmpty(password)) {
+            throw new RequiredParametersException("Username, email and password are required");
+        }
         User user = userRepository.findByUsername(username);
         if (user != null) {
             throw new UserFoundException("Username " + username + " already exists!");

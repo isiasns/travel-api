@@ -1,6 +1,7 @@
 package com.nearsoft.training.travel.api.service;
 
 import com.nearsoft.training.travel.api.dao.User;
+import com.nearsoft.training.travel.api.exception.RequiredParametersException;
 import com.nearsoft.training.travel.api.exception.UserFoundException;
 import com.nearsoft.training.travel.api.repository.UserRepository;
 import org.easymock.EasyMockRunner;
@@ -44,5 +45,10 @@ public class UserServiceSpec {
         replay(userRepository);
         userService.registerUser(username, email, password);
         verify(userRepository);
+    }
+
+    @Test(expected = RequiredParametersException.class)
+    public void givenEmptyUsernameEmailPasswordWhenRegisterUserThenThrowException() {
+        userService.registerUser(null, null, null);
     }
 }
