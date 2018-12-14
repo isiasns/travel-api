@@ -11,6 +11,9 @@ import org.junit.runner.RunWith;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.easymock.EasyMock.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -29,9 +32,13 @@ public class UserControllerSpec {
         String email = "isias@nearsoft.com";
         String password = "12345678";
         User user = User.builder().username(username).email(email).password(password).build();
+        Map<String, String> userData = new HashMap<>();
+        userData.put("username", username);
+        userData.put("email", email);
+        userData.put("password", password);
         expect(userService.registerUser(anyString(), anyString(), anyString())).andReturn(user);
         replay(userService);
-        ResponseEntity<User> result = userController.registerUser(username, email, password);
+        ResponseEntity<User> result = userController.registerUser(userData);
         verify(userService);
         assertThat(result, notNullValue());
         assertThat(result.getStatusCode(), equalTo(HttpStatus.OK));
@@ -41,6 +48,6 @@ public class UserControllerSpec {
 
     @Test(expected = RequiredParametersException.class)
     public void givenEmptyUsernameEmailPasswordWhenRegisterUserThenThrowException() {
-        userController.registerUser(null, null, null);
+        userController.registerUser(null);
     }
 }
