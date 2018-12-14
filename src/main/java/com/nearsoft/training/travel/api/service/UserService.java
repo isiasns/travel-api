@@ -18,7 +18,7 @@ public class UserService {
 
     public User registerUser(String username, String email, String password) {
         User user = userRepository.findByUsername(username);
-        if (user != null){
+        if (user != null) {
             throw new UserFoundException("Username " + username + " already exists!");
         }
         user = User.builder().username(username).email(email).password(password).build();
