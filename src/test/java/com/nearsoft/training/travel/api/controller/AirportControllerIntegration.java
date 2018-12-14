@@ -2,6 +2,7 @@ package com.nearsoft.training.travel.api.controller;
 
 import com.nearsoft.training.travel.api.ApiApplication;
 import com.nearsoft.training.travel.api.dao.Airport;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +12,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
@@ -60,5 +58,12 @@ public class AirportControllerIntegration {
         ResponseEntity<List<Airport>> airports = restTemplate.exchange(createUrlWithPort("/airports/autocomplete/" + term), HttpMethod.GET, entity, new ParameterizedTypeReference<List<Airport>>() {
         });
         assertThat(airports.getBody().hashCode(), equalTo(cache.get(term).get().hashCode()));
+    }
+
+    @Test
+    public void givenEmptyTermWhenAirportsAutocompleteThenReturnFlights() {
+        HttpEntity<String> entity = new HttpEntity<>(null, headers);
+        ResponseEntity<String> response = restTemplate.exchange(createUrlWithPort("/airports/autocomplete/"), HttpMethod.GET, entity, String.class);
+        assertThat(response.getStatusCode(), Matchers.equalTo(HttpStatus.NOT_FOUND));
     }
 }

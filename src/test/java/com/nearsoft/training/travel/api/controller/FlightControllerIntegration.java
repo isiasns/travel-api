@@ -2,6 +2,8 @@ package com.nearsoft.training.travel.api.controller;
 
 import com.nearsoft.training.travel.api.ApiApplication;
 import com.nearsoft.training.travel.api.dao.Flight;
+import com.nearsoft.training.travel.api.dao.User;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,15 +13,13 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +39,7 @@ public class FlightControllerIntegration {
     private CacheManager cacheManager;
 
     @Test
-    public void givenOneWaySearchWhenGetFlightsThenReturnFlights() {
+    public void givenOneWaySearchWhenOneWayThenReturnFlights() {
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
         String params = "origin/LAX/destination/BOS/departure/2019-01-31";
         ResponseEntity<List<Flight>> response = restTemplate.exchange(createUrlWithPort("/flights/one-way/" + params), HttpMethod.GET, entity, new ParameterizedTypeReference<List<Flight>>() {
@@ -57,7 +57,7 @@ public class FlightControllerIntegration {
     }
 
     @Test
-    public void givenRoundTripSearchWhenGetFlightsThenReturnFlights() {
+    public void givenRoundTripSearchWhenRoundTripThenReturnFlights() {
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
         String params = "origin/LAX/destination/BOS/departure/2019-01-31/return/2019-02-28";
         ResponseEntity<Map<String, List<Flight>>> response = restTemplate.exchange(createUrlWithPort("/flights/round-trip/" + params), HttpMethod.GET, entity, new ParameterizedTypeReference<Map<String, List<Flight>>>() {
@@ -84,7 +84,7 @@ public class FlightControllerIntegration {
     }
 
     @Test
-    public void givenOriginDestinationDepartureWhenOneWayThenCachedFlights() {
+    public void givenOneWaySearchWhenOneWayThenCachedFlights() {
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
         String origin = "LAX";
         String destination = "BOS";
@@ -97,7 +97,7 @@ public class FlightControllerIntegration {
     }
 
     @Test
-    public void givenOriginDestinationDepartureReturnWhenRoundTripThenCachedFlights() {
+    public void givenRoundTripSearchReturnWhenRoundTripThenCachedFlights() {
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
         String origin = "LAX";
         String destination = "BOS";
@@ -108,5 +108,19 @@ public class FlightControllerIntegration {
         ResponseEntity<Map<String, List<Flight>>> flights = restTemplate.exchange(createUrlWithPort("/flights/round-trip/" + params), HttpMethod.GET, entity, new ParameterizedTypeReference<Map<String, List<Flight>>>() {
         });
         assertThat(flights.getBody().hashCode(), equalTo(cache.get(origin + destination + departureDate + returnDate).get().hashCode()));
+    }
+
+    @Test
+    public void givenEmptyOneWaySearchWhenOneWayThenReturnFlights() {
+        HttpEntity<String> entity = new HttpEntity<>(null, headers);
+        ResponseEntity<String> response = restTemplate.exchange(createUrlWithPort("/flights/one-way/"), HttpMethod.GET, entity, String.class);
+        assertThat(response.getStatusCode(), Matchers.equalTo(HttpStatus.NOT_FOUND));
+    }
+
+    @Test
+    public void givenEmptyRoundTripSearchWhenRoundTripThenReturnFlights() {
+        HttpEntity<String> entity = new HttpEntity<>(null, headers);
+        ResponseEntity<String> response = restTemplate.exchange(createUrlWithPort("/flights/round-trip/"), HttpMethod.GET, entity, String.class);
+        assertThat(response.getStatusCode(), Matchers.equalTo(HttpStatus.NOT_FOUND));
     }
 }

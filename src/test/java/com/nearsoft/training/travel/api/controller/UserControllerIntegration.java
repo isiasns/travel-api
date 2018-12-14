@@ -8,10 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashMap;
@@ -34,7 +31,7 @@ public class UserControllerIntegration {
     }
 
     @Test
-    public void givenUsernameEmailPasswordWhenRegisterUserThenReturnUser() {
+    public void givenUserDataWhenUsersAddThenReturnUser() {
         String username = "isiasns";
         String email = "isias@nearsoft.com";
         String password = "12345678";
@@ -46,5 +43,13 @@ public class UserControllerIntegration {
         ResponseEntity<User> response = restTemplate.exchange(createUrlWithPort("/users/add/"), HttpMethod.POST, entity, new ParameterizedTypeReference<User>() {
         });
         assertThat(response.getBody().getUsername(), equalTo(username));
+    }
+
+    @Test
+    public void givenEmptyUserDataWhenUsersAddThenReturnBadRequest() {
+        Map<String, String> params = new HashMap<>();
+        HttpEntity<Map> entity = new HttpEntity<>(params, headers);
+        ResponseEntity<String> response = restTemplate.exchange(createUrlWithPort("/users/add/"), HttpMethod.POST, entity, String.class);
+        assertThat(response.getStatusCode(), equalTo(HttpStatus.BAD_REQUEST));
     }
 }
