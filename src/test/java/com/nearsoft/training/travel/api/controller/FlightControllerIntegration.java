@@ -70,8 +70,8 @@ public class FlightControllerIntegration {
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
             departureFlight1 = Flight.builder().origin("LAX").originTerminal("7").destination("BOS").destinationTerminal("B").departureDate(dateFormat.parse("2019-01-31T08:15")).arrivalDate(dateFormat.parse("2019-01-31T16:42")).number("824").airline("UA").build();
             departureFlight2 = Flight.builder().origin("LAX").originTerminal("5").destination("BOS").destinationTerminal("C").departureDate(dateFormat.parse("2019-01-31T15:26")).arrivalDate(dateFormat.parse("2019-01-31T23:47")).number("688").airline("B6").build();
-            returnFlight1 = Flight.builder().origin("BOS").originTerminal("C").destination("LAX").destinationTerminal("5").departureDate(dateFormat.parse("2019-02-28T21:32")).arrivalDate(dateFormat.parse("2019-03-01T01:05")).number("987").airline("B6").build();
-            returnFlight2 = Flight.builder().origin("BOS").originTerminal("C").destination("LAX").destinationTerminal("5").departureDate(dateFormat.parse("2019-02-28T06:57")).arrivalDate(dateFormat.parse("2019-02-28T10:34")).number("287").airline("B6").build();
+            returnFlight1 = Flight.builder().origin("BOS").originTerminal("B").destination("LAX").destinationTerminal("7").departureDate(dateFormat.parse("2019-02-28T06:35")).arrivalDate(dateFormat.parse("2019-02-28T10:16")).number("1820").airline("UA").build();
+            returnFlight2 = Flight.builder().origin("BOS").originTerminal("A").destination("LAX").destinationTerminal("2").departureDate(dateFormat.parse("2019-02-28T17:40")).arrivalDate(dateFormat.parse("2019-02-28T21:10")).number("1654").airline("DL").build();
         } catch (ParseException e) {
             e.printStackTrace();
         }
