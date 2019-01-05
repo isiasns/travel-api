@@ -32,6 +32,9 @@ public class UserService {
     }
 
     public void unregisterUser(String username) {
+        if (Strings.isEmpty(username)) {
+            throw new RequiredParametersException("Username is required");
+        }
         User user = userRepository.findByUsername(username);
         if (user == null) {
             throw new NoUserFoundException("Username " + username + " does not exists!");

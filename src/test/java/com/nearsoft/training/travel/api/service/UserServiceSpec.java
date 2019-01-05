@@ -67,8 +67,13 @@ public class UserServiceSpec {
         verify(userRepository);
     }
 
-    @Test(expected = NoUserFoundException.class)
+    @Test(expected = RequiredParametersException.class)
     public void givenEmptyUsernameWhenUnregisterUserThenThrowException() {
         userService.unregisterUser(null);
+    }
+
+    @Test(expected = NoUserFoundException.class)
+    public void givenWrongUsernameWhenUnregisterUserThenThrowException() {
+        userService.unregisterUser("wronguser");
     }
 }
