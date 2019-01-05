@@ -25,4 +25,13 @@ public class UserServiceIntegration {
         User user = userService.registerUser(username, email, password);
         assertThat(username, equalTo(user.getUsername()));
     }
+
+    @Test
+    public void givenUsernameWhenUnregisterUserThenDeleteUser() {
+        String username = "isiasns";
+        String email = "isias@nearsoft.com";
+        String password = "12345678";
+        User user = userService.registerUser(username, email, password);
+        userService.unregisterUser(username);
+    }
 }
