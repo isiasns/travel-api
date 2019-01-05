@@ -1,6 +1,7 @@
 package com.nearsoft.training.travel.api.service;
 
 import com.nearsoft.training.travel.api.dao.User;
+import com.nearsoft.training.travel.api.exception.NoUserFoundException;
 import com.nearsoft.training.travel.api.exception.RequiredParametersException;
 import com.nearsoft.training.travel.api.exception.UserFoundException;
 import com.nearsoft.training.travel.api.repository.UserRepository;
@@ -28,5 +29,13 @@ public class UserService {
         }
         user = User.builder().username(username).email(email).password(password).build();
         return userRepository.save(user);
+    }
+
+    public void unregisterUser(String username) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new NoUserFoundException("Username " + username + " does not exists!");
+        }
+        userRepository.deleteById(user.getId());
     }
 }
