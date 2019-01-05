@@ -9,7 +9,6 @@ import com.nearsoft.training.travel.api.repository.UserRepository;
 import org.easymock.EasyMockRunner;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

@@ -2,7 +2,6 @@ package com.nearsoft.training.travel.api.controller;
 
 import com.nearsoft.training.travel.api.ApiApplication;
 import com.nearsoft.training.travel.api.dao.Flight;
-import com.nearsoft.training.travel.api.dao.User;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +18,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
