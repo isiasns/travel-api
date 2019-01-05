@@ -1,6 +1,7 @@
 package com.nearsoft.training.travel.api.repository;
 
 import com.nearsoft.training.travel.api.dao.User;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +18,7 @@ import static org.hamcrest.Matchers.equalTo;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class UserRepositoryIntegration {
-    private User persistedUser = null;
+    private User persistedUser;
 
     @Autowired
     private TestEntityManager testEntityManager;
@@ -28,14 +29,19 @@ public class UserRepositoryIntegration {
 
     @Before
     public void setUp() {
-        persistedUser = User.builder().username("isias").password("12345678").build();
-        testEntityManager.persist(persistedUser);
+        persistedUser = User.builder().username("isiasns").password("12345678").email("isias@nearsoft.com").build();
+        persistedUser.setId(testEntityManager.persistAndGetId(persistedUser, Long.class));
         testEntityManager.flush();
     }
 
     @Test
     public void givenUsernameWhenFindByUsernameThenReturnUser() {
-        User user = userRepository.findByUsername("isias");
+        User user = userRepository.findByUsername("isiasns");
         assertThat(user.getId(), equalTo(persistedUser.getId()));
+    }
+
+    @After
+    public void tearDown() {
+        testEntityManager.remove(persistedUser);
     }
 }

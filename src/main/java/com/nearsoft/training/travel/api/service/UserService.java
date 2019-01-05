@@ -1,6 +1,7 @@
 package com.nearsoft.training.travel.api.service;
 
 import com.nearsoft.training.travel.api.dao.User;
+import com.nearsoft.training.travel.api.exception.NoMatchCredentialsException;
 import com.nearsoft.training.travel.api.exception.NoUserFoundException;
 import com.nearsoft.training.travel.api.exception.RequiredParametersException;
 import com.nearsoft.training.travel.api.exception.UserFoundException;
@@ -40,5 +41,16 @@ public class UserService {
             throw new NoUserFoundException("Username " + username + " does not exists!");
         }
         userRepository.deleteById(user.getId());
+    }
+
+    public User loginUser(String username, String password) {
+        if (Strings.isEmpty(username) || Strings.isEmpty(password)) {
+            throw new RequiredParametersException("Username and password are required");
+        }
+        User user = userRepository.findByUsernameAndPassword(username, password);
+        if (user == null) {
+            throw new NoMatchCredentialsException("Wrong username or password");
+        }
+        return user;
     }
 }
