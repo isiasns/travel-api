@@ -22,8 +22,8 @@ public class UserServiceIntegration {
         String username = "isiasns";
         String email = "isias@nearsoft.com";
         String password = "12345678";
-        User user = userService.registerUser(username, email, password);
-        assertThat(username, equalTo(user.getUsername()));
+        User registeredUser = userService.registerUser(username, email, password);
+        assertThat(username, equalTo(registeredUser.getUsername()));
     }
 
     @Test
@@ -31,7 +31,17 @@ public class UserServiceIntegration {
         String username = "isiasns";
         String email = "isias@nearsoft.com";
         String password = "12345678";
-        User user = userService.registerUser(username, email, password);
+        userService.registerUser(username, email, password);
         userService.unregisterUser(username);
+    }
+
+    @Test
+    public void givenUsernamePasswordWhenLoginUserThenReturnUser() {
+        String username = "isiasns";
+        String email = "isias@nearsoft.com";
+        String password = "12345678";
+        User registeredUser = userService.registerUser(username, email, password);
+        User loginUser = userService.loginUser(username, password);
+        assertThat(registeredUser.getUsername(), equalTo(loginUser.getUsername()));
     }
 }
