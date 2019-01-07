@@ -1,7 +1,10 @@
 package com.nearsoft.training.travel.api.service;
 
 import com.nearsoft.training.travel.api.dao.Booking;
+import com.nearsoft.training.travel.api.exception.NoBookingFoundException;
 import com.nearsoft.training.travel.api.repository.BookingRepository;
+
+import java.util.Optional;
 
 public class BookingService {
 
@@ -22,5 +25,13 @@ public class BookingService {
     private Booking saveBooking(Booking booking, Booking.Status status) {
         booking.setStatus(status.toString());
         return bookingRepository.save(booking);
+    }
+
+    public void deleteBooking(Long bookingId) {
+        Optional<Booking> optional = bookingRepository.findById(bookingId);
+        if (optional == null) {
+            throw new NoBookingFoundException("Booking does not exists!");
+        }
+        bookingRepository.delete(optional.get());
     }
 }
