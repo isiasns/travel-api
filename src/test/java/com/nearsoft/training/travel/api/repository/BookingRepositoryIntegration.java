@@ -14,13 +14,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -40,18 +37,11 @@ public class BookingRepositoryIntegration {
 
     @Before
     public void setUp() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-        persistedUser = User.builder().username("isiasns").password("12345678").email("isias@nearsoft.com").build();
-        try {
-            persistedDeparting = Flight.builder().origin("LAX").originTerminal("7").destination("BOS").destinationTerminal("B").departureDate(dateFormat.parse("2019-01-31T08:15")).arrivalDate(dateFormat.parse("2019-01-31T16:42")).number("824").airline("UA").build();
-            persistedReturning = Flight.builder().origin("LAX").originTerminal("7").destination("BOS").destinationTerminal("B").departureDate(dateFormat.parse("2019-01-31T08:15")).arrivalDate(dateFormat.parse("2019-01-31T16:42")).number("824").airline("UA").build();
-            persistedBooking = Booking.builder().user(persistedUser)
-                    .departing(persistedDeparting)
-                    .returning(persistedReturning)
-                    .build();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        persistedUser = User.builder().username("isiasns").build();
+        persistedDeparting = Flight.builder().build();
+        persistedReturning = Flight.builder().build();
+        persistedBooking = Booking.builder().user(persistedUser).departing(persistedDeparting)
+                .returning(persistedReturning).build();
         persistedDeparting.setId(testEntityManager.persistAndGetId(persistedDeparting, Long.class));
         persistedReturning.setId(testEntityManager.persistAndGetId(persistedReturning, Long.class));
         persistedUser.setId(testEntityManager.persistAndGetId(persistedUser, Long.class));
@@ -63,6 +53,12 @@ public class BookingRepositoryIntegration {
     public void givenUserIdWhenFindByUserIdThenReturnBookings() {
         List<Booking> bookings = bookingRepository.findByUserId(persistedUser.getId());
         assertThat(bookings, hasSize(1));
+    }
+
+    @Test
+    public void givenBookingIdWhenFindByIdThenReturnBooking() {
+        Booking booking = bookingRepository.findById(persistedBooking.getId()).get();
+        assertThat(booking.getId(), is(notNullValue()));
     }
 
     @After
