@@ -3,9 +3,11 @@ package com.nearsoft.training.travel.api.service;
 import com.nearsoft.training.travel.api.dao.Booking;
 import com.nearsoft.training.travel.api.exception.NoBookingFoundException;
 import com.nearsoft.training.travel.api.repository.BookingRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class BookingService {
 
     private BookingRepository bookingRepository;

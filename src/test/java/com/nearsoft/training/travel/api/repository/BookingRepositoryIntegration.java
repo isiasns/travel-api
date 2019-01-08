@@ -3,7 +3,6 @@ package com.nearsoft.training.travel.api.repository;
 import com.nearsoft.training.travel.api.dao.Booking;
 import com.nearsoft.training.travel.api.dao.Flight;
 import com.nearsoft.training.travel.api.dao.User;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,8 +25,6 @@ import static org.hamcrest.Matchers.*;
 public class BookingRepositoryIntegration {
     private User persistedUser;
     private Booking persistedBooking;
-    private Flight persistedDeparting;
-    private Flight persistedReturning;
 
     @Autowired
     private TestEntityManager testEntityManager;
@@ -38,12 +35,8 @@ public class BookingRepositoryIntegration {
     @Before
     public void setUp() {
         persistedUser = User.builder().username("isiasns").build();
-        persistedDeparting = Flight.builder().build();
-        persistedReturning = Flight.builder().build();
-        persistedBooking = Booking.builder().user(persistedUser).departing(persistedDeparting)
-                .returning(persistedReturning).build();
-        persistedDeparting.setId(testEntityManager.persistAndGetId(persistedDeparting, Long.class));
-        persistedReturning.setId(testEntityManager.persistAndGetId(persistedReturning, Long.class));
+        persistedBooking = Booking.builder().user(persistedUser).departing(Flight.builder().build())
+                .returning(Flight.builder().build()).build();
         persistedUser.setId(testEntityManager.persistAndGetId(persistedUser, Long.class));
         persistedBooking.setId(testEntityManager.persistAndGetId(persistedBooking, Long.class));
         testEntityManager.flush();
@@ -59,13 +52,5 @@ public class BookingRepositoryIntegration {
     public void givenBookingIdWhenFindByIdThenReturnBooking() {
         Booking booking = bookingRepository.findById(persistedBooking.getId()).get();
         assertThat(booking.getId(), is(notNullValue()));
-    }
-
-    @After
-    public void tearDown() {
-        testEntityManager.remove(persistedBooking);
-        testEntityManager.remove(persistedUser);
-        testEntityManager.remove(persistedDeparting);
-        testEntityManager.remove(persistedReturning);
     }
 }
