@@ -4,6 +4,7 @@ import com.nearsoft.training.travel.api.dao.Booking;
 import com.nearsoft.training.travel.api.dao.Flight;
 import com.nearsoft.training.travel.api.dao.User;
 import com.nearsoft.training.travel.api.exception.NoBookingFoundException;
+import com.nearsoft.training.travel.api.exception.RequiredParametersException;
 import com.nearsoft.training.travel.api.repository.BookingRepository;
 import org.easymock.EasyMockRunner;
 import org.easymock.Mock;
@@ -37,6 +38,11 @@ public class BookingServiceSpec {
         verify(bookingRepository);
     }
 
+    @Test(expected = RequiredParametersException.class)
+    public void givenEmptyTempBookingWhenSaveTempBookingThenThrowException() {
+        bookingService.saveTempBooking(null);
+    }
+
     @Test
     public void givenBookingWhenSaveBookingThenSaveAndReturnBooking() {
         User user = User.builder().username("isiasns").build();
@@ -50,12 +56,17 @@ public class BookingServiceSpec {
         verify(bookingRepository);
     }
 
+    @Test(expected = RequiredParametersException.class)
+    public void givenEmptyBookingWhenSaveBookingThenThrowException() {
+        bookingService.saveBooking(null);
+    }
+
     @Test
     public void givenBookingIdWhenDeleteBookingThenDeleteBooking() {
         User user = User.builder().username("isiasns").build();
         Flight departing = Flight.builder().build();
         Flight returning = Flight.builder().build();
-        Booking savedBooking = Booking.builder().user(user).departing(departing).returning(returning).build();
+        Booking savedBooking = Booking.builder().id(0L).user(user).departing(departing).returning(returning).build();
         Optional<Booking> optional = Optional.of(savedBooking);
         expect(bookingRepository.findById(anyLong())).andReturn(optional);
         bookingRepository.delete(anyObject());
@@ -63,6 +74,11 @@ public class BookingServiceSpec {
         replay(bookingRepository);
         bookingService.deleteBooking(savedBooking.getId());
         verify(bookingRepository);
+    }
+
+    @Test(expected = RequiredParametersException.class)
+    public void givenEmptyBookingIdWhenDeleteBookingThenThrowException() {
+        bookingService.deleteBooking(null);
     }
 
     @Test(expected = NoBookingFoundException.class)
