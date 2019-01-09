@@ -36,9 +36,6 @@ public class UserController {
         String username = userData.get("username");
         String email = userData.get("email");
         String password = userData.get("password");
-        if (Strings.isEmpty(username) || Strings.isEmpty(email) || Strings.isEmpty(password)) {
-            return false;
-        }
-        return true;
+        return !Strings.isEmpty(username) && !Strings.isEmpty(email) && !Strings.isEmpty(password);
     }
 }

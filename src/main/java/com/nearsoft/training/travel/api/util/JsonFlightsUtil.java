@@ -10,7 +10,6 @@ import java.util.*;
 
 public class JsonFlightsUtil {
     private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-    ;
 
     public static List<Flight> getDepartureFlightsFromRootNode(JsonNode rootNode) {
         return getFlightsFromRootNode(rootNode, "outbound");
