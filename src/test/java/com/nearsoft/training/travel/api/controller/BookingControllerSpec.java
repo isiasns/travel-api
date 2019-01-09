@@ -46,7 +46,7 @@ public class BookingControllerSpec {
     public void givenTempBookingWhenSaveBookingThenSaveAndReturnBooking() {
         Booking booking = Booking.builder().build();
         booking.setStatus(Booking.Status.PAID.toString());
-        expect(bookingService.saveTempBooking(anyObject())).andReturn(booking);
+        expect(bookingService.saveBooking(anyObject())).andReturn(booking);
         replay(bookingService);
         ResponseEntity<Booking> result = bookingController.saveBooking(booking);
         verify(bookingService);

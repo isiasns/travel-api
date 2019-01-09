@@ -6,7 +6,10 @@ import com.nearsoft.training.travel.api.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+@RestController
+@RequestMapping("/bookings")
 public class BookingController {
     private BookingService bookingService;
 
@@ -15,21 +18,24 @@ public class BookingController {
         this.bookingService = bookingService;
     }
 
-    public ResponseEntity<Booking> saveTempBooking(Booking tempBooking) {
+    @PostMapping("/temp")
+    public ResponseEntity<Booking> saveTempBooking(@RequestBody Booking tempBooking) {
         if (tempBooking == null) {
             throw new RequiredParametersException("Booking is required");
         }
         return new ResponseEntity<>(bookingService.saveTempBooking(tempBooking), HttpStatus.OK);
     }
 
-    public ResponseEntity<Booking> saveBooking(Booking booking) {
+    @PostMapping("/add")
+    public ResponseEntity<Booking> saveBooking(@RequestBody Booking booking) {
         if (booking == null) {
             throw new RequiredParametersException("Booking is required");
         }
-        return new ResponseEntity<>(bookingService.saveTempBooking(booking), HttpStatus.OK);
+        return new ResponseEntity<>(bookingService.saveBooking(booking), HttpStatus.OK);
     }
 
-    public ResponseEntity deleteBooking(Long bookingId) {
+    @DeleteMapping("/delete/{bookingId}")
+    public ResponseEntity deleteBooking(@PathVariable Long bookingId) {
         if (bookingId == null) {
             throw new RequiredParametersException("Booking id is required");
         }
